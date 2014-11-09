@@ -72,7 +72,10 @@ Heap<Pri, T>::Heap(){
 
 template<class Pri, class T>
 Heap<Pri, T>::~Heap(){
-	//TODO
+	for (int x = 0; x < arrSize; x++){
+		remove();
+	}
+	delete backingArray;
 }
 
 template<class Pri, class T>
