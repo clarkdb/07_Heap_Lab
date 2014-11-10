@@ -93,12 +93,40 @@ void Heap<Pri, T>::add(std::pair<Pri, T> toAdd){
 
 template<class Pri, class T>
 void Heap<Pri, T>::bubbleUp(unsigned long index){
-	//TODO
+	std::pair<Pri, T> tmp;
+	if (backingArray[(index - 1) / 2].Pri < backingArray[index].Pri){
+		tmp = backingArray[index];
+		backingArray[index] = backingArray[(index - 1) / 2];
+		backingArray[(index - 1) / 2] = tmp;
+		if ((index - 1) / 2 > 0){
+			bubbleUp((index - 1) / 2);
+		}
+	}
 }
 
 template<class Pri, class T>
 void Heap<Pri, T>::trickleDown(unsigned long index){
-	//TODO
+	std::pair<Pri, T> tmp;
+	if (backingArray[(2 * index + 2)].Pri > backingArray[index].Pri
+		&& backingArray[(2 * index + 2)].Pri > backingArray[(2 * index + 1)].Pri){
+		tmp = backingArray[index];
+		backingArray[index] = backingArray[(2 * index + 2)];
+		backingArray[(2 * index + 2)] = tmp;
+
+		if ((2 * index + 2) < numItems - 1){
+			trickleDown(2 * index + 2);
+		}
+	} else if (backingArray[(2 * index + 1)].Pri > backingArray[index].Pri){
+		tmp = backingArray[index];
+		backingArray[index] = backingArray[(2 * index + 1)];
+		backingArray[(2 * index + 1)] = tmp;
+		if ((2 * index + 1) < numItems - 1){
+			trickleDown(2 * index + 1);
+		}
+	}
+	
+
+	
 }
 
 template<class Pri, class T>
