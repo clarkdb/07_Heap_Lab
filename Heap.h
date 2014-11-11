@@ -67,7 +67,7 @@ template<class Pri, class T>
 Heap<Pri, T>::Heap(){
 	numItems = 0;
 	arrSize = START_SIZE;
-	std::pair<Pri, T>* backingArray = new std::pair<Pri, T>*[arrSize];
+	std::pair<Pri, T>* backingArray = new std::pair<Pri, T> [arrSize];
 }
 
 template<class Pri, class T>
@@ -136,7 +136,8 @@ std::pair<Pri, T> Heap<Pri, T>::remove(){
 	numItems--;
 	std::pair<Pri, T> tmp = backingArray[0];
 	backingArray[0] = backingArray[numItems];
-	delete backingArray[numItems];
+	backingArray[numItems].Pri = NULL;
+	backingArray[numItems].T = NULL;
 	trickleDown(0);
 	return tmp;
 }
