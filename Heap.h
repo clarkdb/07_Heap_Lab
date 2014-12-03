@@ -72,18 +72,17 @@ Heap<Pri, T>::Heap(){
 
 template<class Pri, class T>
 Heap<Pri, T>::~Heap(){
-	for (int x = 0; x < arrSize; x++){
-		remove();
-	}
-	delete backingArray;
+	delete[] backingArray;
 }
 
 template<class Pri, class T>
 void Heap<Pri, T>::grow(){
 	std::pair<Pri, T>* newArray = new std::pair<Pri, T>*[(arrSize * 2)];
 	for (int x = 0; x < numItems; x++){
-		add(backingArray[x]);
+		newArray[x] = backingArray[x];
 	}
+	delete *backingArray;
+	backingArray = newArray;
 }
 
 template<class Pri, class T>
@@ -95,8 +94,9 @@ void Heap<Pri, T>::add(std::pair<Pri, T> toAdd){
 
 template<class Pri, class T>
 void Heap<Pri, T>::bubbleUp(unsigned long index){
+	unsigned int parent = (index - 1) / 2;
 	std::pair<Pri, T> tmp;
-	if (backingArray[(index - 1) / 2].Pri < backingArray[index].Pri){
+	if (backingArray[parent.first] < backingArray[index].first){
 		tmp = backingArray[index];
 		backingArray[index] = backingArray[(index - 1) / 2];
 		backingArray[(index - 1) / 2] = tmp;
@@ -109,23 +109,23 @@ void Heap<Pri, T>::bubbleUp(unsigned long index){
 template<class Pri, class T>
 void Heap<Pri, T>::trickleDown(unsigned long index){
 	std::pair<Pri, T> tmp;
-	if (backingArray[(2 * index + 2)].Pri > backingArray[index].Pri
-		&& backingArray[(2 * index + 2)].Pri > backingArray[(2 * index + 1)].Pri){
+	//if (backingArray[(2 * index + 2)].Pri > backingArray[index].Pri
+		//&& backingArray[(2 * index + 2)].Pri > backingArray[(2 * index + 1)].Pri){
 		tmp = backingArray[index];
 		backingArray[index] = backingArray[(2 * index + 2)];
 		backingArray[(2 * index + 2)] = tmp;
 
 		if ((2 * index + 2) < numItems - 1){
 			trickleDown(2 * index + 2);
-		}
-	} else if (backingArray[(2 * index + 1)].Pri > backingArray[index].Pri){
+	//	}
+//	} else if (backingArray[(2 * index + 1)].Pri > backingArray[index].Pri){
 		tmp = backingArray[index];
 		backingArray[index] = backingArray[(2 * index + 1)];
 		backingArray[(2 * index + 1)] = tmp;
 		if ((2 * index + 1) < numItems - 1){
 			trickleDown(2 * index + 1);
 		}
-	}
+//	}
 	
 
 	
@@ -136,8 +136,6 @@ std::pair<Pri, T> Heap<Pri, T>::remove(){
 	numItems--;
 	std::pair<Pri, T> tmp = backingArray[0];
 	backingArray[0] = backingArray[numItems];
-	backingArray[numItems].Pri = NULL;
-	backingArray[numItems].T = NULL;
 	trickleDown(0);
 	return tmp;
 }
